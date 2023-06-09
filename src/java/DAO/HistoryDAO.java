@@ -53,18 +53,20 @@ public class HistoryDAO {
     
     
     
-        public List<HistoryVaccine> getHistoryByIduser(String idUser) {
+        public List<HistoryVaccine> getHistoryByIduser(String id) {
         List<HistoryVaccine> list = new ArrayList<>();
         String query = "SELECT u.username, u.gender, h.name, ap.appointmentDateAt, v.name AS vaccine_name, a.price\n" +
                         "FROM [user] u\n" +
                         "JOIN appointment a ON u.idUser = a.idUserVaccineA\n" +
                         "JOIN appointment_provision ap ON a.idAppoinmentProvisionA = ap.idAppointmentProvision\n" +
                         "JOIN vaccine v ON ap.idVaccineAP = v.idVaccine\n" +
-                        "JOIN hospital h ON ap.idHAP = h.idH; ";
+                        "JOIN hospital h ON ap.idHAP = h.idH;\n" +
+                        "\n" +
+                        "WHERE u.idUser = '?';";
         try {
             con = new DBContext().getConnection(); // mo ket noi voi sql sever
             ps = con.prepareStatement(query); //chay cau lenh query
-            ps.setString(1, idUser);
+            ps.setString(1, id);
             rs = ps.executeQuery();
             while (rs.next()) {
                 list.add(new HistoryVaccine(

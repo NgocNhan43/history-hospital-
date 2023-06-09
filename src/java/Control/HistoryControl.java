@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import model.HistoryVaccine;
 
 /**
@@ -48,10 +49,12 @@ public class HistoryControl extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String idUser = request.getParameter("idUser");
-        HistoryDAO dao = new HistoryDAO();
-        List<HistoryVaccine> listh = dao.getHistoryByIduser(idUser);
-        request.setAttribute("listp", listh);
+       
+        HttpSession session = request.getSession();
+       String id = (String) session.getAttribute("idUser");
+          HistoryDAO dao = new HistoryDAO();
+        List<HistoryVaccine> listh = dao.getHistoryByIduser(id);
+        request.setAttribute("list", listh);
         
     }
 
